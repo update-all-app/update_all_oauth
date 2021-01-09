@@ -1,11 +1,11 @@
 class BusinessesController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   before_action :set_business, only: [:show, :update, :destroy]
 
   # GET /businesses
   def index
     @businesses = Business.all
-
+    puts current_user.inspect
     render json: @businesses
   end
 

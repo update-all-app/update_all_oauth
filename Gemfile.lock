@@ -71,6 +71,10 @@ GEM
       warden (~> 1.2.3)
     doorkeeper (5.4.0)
       railties (>= 5)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     erubi (1.10.0)
     ffi (1.14.2)
     globalid (0.4.2)
@@ -166,6 +170,7 @@ DEPENDENCIES
   byebug
   devise (~> 4.7)
   doorkeeper (~> 5.4)
+  dotenv-rails (~> 2.7)
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)

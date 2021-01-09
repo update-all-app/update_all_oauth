@@ -208,3 +208,42 @@ end
 ```
 
 This is [where we're at in the tutorial](https://rubyyagi.com/rails-api-authentication-devise-doorkeeper/#create-your-own-oauth-application)
+
+Make a new Oauth client in rails console
+
+```
+Doorkeeper::Application.create(name: "React client", redirect_uri: "", scopes: "")
+```
+
+Store the uid and secret so we can use later. 
+
+```
+bundle add dotenv-rails
+touch .env
+echo ".env" >> .gitignore
+```
+
+In .env 
+
+```
+REACT_CLIENT_ID=secret_here
+REACT_CLIENT_SECRET=secret_here
+```
+
+We create a seeds file that will create
+```rb
+# db/seeds.rb
+if Doorkeeper::Application.count.zero?
+  Doorkeeper::Application.create(name: "iOS client", redirect_uri: "", scopes: "")
+  Doorkeeper::Application.create(name: "Android client", redirect_uri: "", scopes: "")
+  Doorkeeper::Application.create(name: "React client", redirect_uri: "", scopes: "")
+end
+```
+
+Create a user from the rails console:
+
+```
+User.create(email:'test@test.com', password: 'password')
+```
+
+Now we can try out an endpoint in Postman.
