@@ -43,8 +43,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
 
   def sign_up(resource_name, resource)
-    @token = TokenService.new(ENV['API_URL']).get_token(sign_up_params)
-    sign_in(resource_name, resource)
+    @token = TokenService.new(user: resource).get_token
   end
 
   def respond_with(resource,_opts = {})
