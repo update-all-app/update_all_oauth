@@ -24,6 +24,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # only called when credentials are accurate
   def sign_in(resource_name, resource)
+    puts resource.inspect
     @token = TokenService.new(user: resource).get_token
   end
 

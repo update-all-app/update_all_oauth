@@ -3,7 +3,7 @@ class TokenService
   def initialize(_options={})
     options = {
       user: _options[:user],
-      api_url: _options[:api_url] || "http://localhost:3000",
+      api_url: _options[:api_url] || ENV["API_URL"],
       client_id: _options[:client_id] || ENV["REACT_CLIENT_UID"],
       client_secret: _options[:client_secret] || ENV["REACT_CLIENT_SECRET"], 
       scope: _options[:scopes] || ""
