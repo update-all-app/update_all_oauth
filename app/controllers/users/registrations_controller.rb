@@ -3,6 +3,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+  respond_to :json
+  skip_before_action :doorkeeper_authorize!
 
   # GET /resource/sign_up
   # def new
@@ -38,8 +40,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
+  def sign_up(resource_name, resource)
+    @token = TokenService.new(ENV['API_URL']).get_token(sign_up_params)
+    sign_in(resource_name, resource)
+  end
+
+  def respond_with(resource,_opts = {})
+    if resource.persisted?
+      render json: {
+        user: resource,
+        token: @token,
+        message: "Signed up successfully"
+      }, status: :ok
+    else
+      render json: {
+        message: resource.errors.full_messages.to_sentence
+      }, status: :unprocessable_entity
+    end
+  end
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
   #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])

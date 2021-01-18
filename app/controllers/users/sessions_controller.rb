@@ -11,28 +11,9 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  def create    
-    if user = User.authenticate(params[:email], params[:password])
-      uri = URI("http://#{request.env['HTTP_HOST']}/oauth/token")
-      res = Faraday.post(uri, {
-        grant_type: 'password',
-        email: params[:email],
-        password: params[:password],
-        client_id: ENV["REACT_CLIENT_UID"],
-        client_secret: ENV["REACT_CLIENT_SECRET"]
-      })
-      @json = JSON.parse(res.body)
-      render json: {
-        token: @json,
-        user: user,
-        message: "Logged in successfully"
-      }, status: :ok
-    else
-      render json: {
-        error: "Inalid Email Password combination."
-      }, status: :unauthorized
-    end
-  end
+  # def create 
+  #   super
+  # end 
 
   # DELETE /resource/sign_out
   # def destroy
@@ -41,9 +22,25 @@ class Users::SessionsController < Devise::SessionsController
 
   protected
 
-  def respond_with(resource, _opts = {})
-    render json: @json
+  # only called when credentials are accurate
+  def sign_in(resource_name, resource)
+    @token = TokenService.new(user: resource).get_token
   end
+
+  def respond_with(resource,_opts = {})
+    if resource.persisted?
+      render json: {
+        user: resource,
+        token: @token, 
+        message: "Logged in Successfully"
+      }, status: :ok
+    else
+      render json: {
+        message: "Invalid Email or Password"
+      }, status: :unauthorized
+    end
+  end
+
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
