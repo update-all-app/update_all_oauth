@@ -16,7 +16,7 @@ class Users::SessionsController < Devise::SessionsController
                Doorkeeper.config.access_token_model.by_refresh_token(params["token"])
     if @token 
       @user = User.find_by_id(@token.resource_owner_id)
-      @new_token = token_service(@user).get_token
+      @new_token = TokenService.new(user: resource, previous_refresh_token: @token.refresh_token).get_token
       @token.revoke
       render json: {
         user: @user, 
@@ -41,19 +41,9 @@ class Users::SessionsController < Devise::SessionsController
 
   protected
 
-  # allow client_id and client_secret to be passed as params for tests
-  # environment variables will be used for these in other environments.
-  def token_service(resource)
-    if Rails.env == "test"
-      @token_service = TokenService.new(user: resource, client_id: params[:client_id], client_secret: params[:client_secret])
-    else 
-      @token_service = TokenService.new(user: resource)
-    end
-  end
-
   # only called when credentials are accurate
   def sign_in(resource_name, resource)
-    @token = token_service(resource).get_token
+    @token = TokenService.new(user: resource).get_token
   end
 
   def respond_with(resource,_opts = {})

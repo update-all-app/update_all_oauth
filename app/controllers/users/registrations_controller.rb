@@ -42,16 +42,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  def token_service(resource)
-    if Rails.env == "test"
-      @token_service = TokenService.new(user: resource, client_id: params[:client_id], client_secret: params[:client_secret])
-    else 
-      @token_service = TokenService.new(user: resource)
-    end
-  end
-
   def sign_up(resource_name, resource)
-    @token = token_service(resource).get_token
+    @token = TokenService.new(user: resource).get_token
   end
 
   def respond_with(resource,_opts = {})

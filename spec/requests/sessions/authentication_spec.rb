@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe "Authentication", type: :request do
   before(:all) do 
     @client = Doorkeeper::Application.create(name: "React client")
+    ENV["REACT_CLIENT_UID"] = @client.uid
+    ENV["REACT_CLIENT_SECRET"] = @client.secret
   end
   describe "POST /login" do
     it "responds with an access token that allows access to protected api endpoints" do
@@ -12,19 +14,11 @@ RSpec.describe "Authentication", type: :request do
       # logging in will return a 200 status code with correct credentials
       @user = FactoryBot.create(:user)
       
-      # we include the client_id and client_secret in the body of the request here
-      # so that we can access credentials connected to an OAuth application that 
-      # exists within our test database (other environments will load these credentials
-      # via environment variables) The controller is configured to use these to build
-      # a new token service instance if the Rails.env == "test". In development or
-      # production environments, only the user is required in the body of the request.
       body = {
         user: {
           email: "test@test.com", 
           password: "password"
-        },
-        client_id: @client.uid,
-        client_secret: @client.secret
+        }
       }
       post "/login", params: body
 
@@ -48,9 +42,7 @@ RSpec.describe "Authentication", type: :request do
         user: {
           email: "test@test.com", 
           password: "password"
-        },
-        client_id: @client.uid,
-        client_secret: @client.secret
+        }
       }
       
       post "/signup", params: body
@@ -70,7 +62,7 @@ RSpec.describe "Authentication", type: :request do
   describe "DELETE /logout" do 
     it "revokes the current user's access token so it is unable to access protected routes" do 
       @user = FactoryBot.create(:user)
-      @token = TokenService.new(user: @user, client_id: @client.uid, client_secret: @client.secret).get_token
+      @token = TokenService.new(user: @user).get_token
       @access_token = @token["token"]
       headers = {
         "Authorization": "Bearer #{@access_token}",
@@ -99,7 +91,7 @@ RSpec.describe "Authentication", type: :request do
   describe "POST /refresh_token" do 
     it "revokes previous access token and responds with a new access token generating using the refresh token" do 
       @user = FactoryBot.create(:user)
-      @token = TokenService.new(user: @user, client_id: @client.uid, client_secret: @client.secret).get_token
+      @token = TokenService.new(user: @user).get_token
       @access_token_to_be_revoked = @token["token"]
       @refresh_token = @token["refresh_token"]
 
@@ -107,13 +99,9 @@ RSpec.describe "Authentication", type: :request do
         "Authorization": "Bearer #{@refresh_token}",
         "Accept": "application/json"
       }
-      body = {
-        client_id: @client.uid,
-        client_secret: @client.secret
-      }
-
+    
       # we are able to use the refresh_token to generate a new access token
-      post "/refresh_token", params: body, headers: headers
+      post "/refresh_token", headers: headers
       expect(response).to have_http_status(200)
       @new_token = JSON.parse(response.body)["token"]["token"]
 
@@ -125,6 +113,12 @@ RSpec.describe "Authentication", type: :request do
       headers["Authorization"] = "Bearer #{@new_token}"
       get businesses_path, headers: headers
       expect(response).to have_http_status(200)
+
+      # original refresh token should no longer grant new access tokens 
+      headers["Authorization"] = "Bearer #{@refresh_token}"
+      post "/refresh_token", headers: headers
+      expect(response).to have_http_status(422)
+
     end
   end
 end
