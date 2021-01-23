@@ -3,13 +3,11 @@ class TokenService
   def initialize(_options={})
     options = {
       user: _options[:user],
-      api_url: _options[:api_url] || ENV["API_URL"],
       client_id: _options[:client_id] || ENV["REACT_CLIENT_UID"],
       client_secret: _options[:client_secret] || ENV["REACT_CLIENT_SECRET"], 
       scope: _options[:scopes] || ""
     }
     @user = options[:user]
-    @api_url = options[:api_url]
     @client_id = options[:client_id]
     @client_secret = options[:client_secret]
     @scopes = options[:scopes]
@@ -33,7 +31,6 @@ class TokenService
 
   private 
   
-
   def generate_refresh_token
     loop do
       # generate a random token string and return it, 

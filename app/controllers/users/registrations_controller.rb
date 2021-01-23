@@ -43,7 +43,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
 
   def sign_up(resource_name, resource)
-    puts "resource: #{resource.inspect}"
     @token = TokenService.new(user: resource).get_token
   end
 

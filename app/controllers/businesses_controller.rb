@@ -5,7 +5,6 @@ class BusinessesController < ApplicationController
   # GET /businesses
   def index
     @businesses = Business.all
-    puts current_user.inspect
     render json: @businesses
   end
 

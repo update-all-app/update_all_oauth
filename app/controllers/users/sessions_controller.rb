@@ -10,6 +10,25 @@ class Users::SessionsController < Devise::SessionsController
   #   super
   # end
 
+  def refresh 
+    params["token"] = request.headers.fetch(:authorization).try(:split," ").try(:last)
+    @token ||= Doorkeeper.config.access_token_model.by_token(params["token"]) ||
+               Doorkeeper.config.access_token_model.by_refresh_token(params["token"])
+    if @token 
+      @user = User.find_by_id(@token.resource_owner_id)
+      @new_token = TokenService.new(user: @user).get_token
+      @token.revoke
+      render json: {
+        user: @user, 
+        token: @new_token
+      }, status: :ok
+    else
+      render json: {
+        message: "Couldn't refresh the token"
+      }, stuats: :unprocessable_entity
+    end
+  end
+
   # POST /resource/sign_in
   # def create 
   #   super
@@ -24,7 +43,6 @@ class Users::SessionsController < Devise::SessionsController
 
   # only called when credentials are accurate
   def sign_in(resource_name, resource)
-    puts "resource: #{resource.inspect}"
     @token = TokenService.new(user: resource).get_token
   end
 
