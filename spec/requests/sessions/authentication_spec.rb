@@ -124,4 +124,17 @@ RSpec.describe "Authentication", type: :request do
 
     end
   end
+
+  describe "GET /api/v1/me" do 
+    it "returns the currently logged in user if the headers include a valid token" do 
+      get "/api/v1/me"
+      expect(response).to have_http_status(401)
+
+      @user = FactoryBot.create(:user)
+      @token = TokenService.new(user: @user).get_token
+      get "/api/v1/me", headers: {"Authorization": "Bearer #{@token['token']}"}
+      expect(response).to have_http_status(200)
+      expect(response.body).to include(@user.email)
+    end
+  end 
 end
