@@ -40,6 +40,7 @@ RSpec.describe "Authentication", type: :request do
     it "creates a new user and responds with an OAuth access token used to access protected resources" do
       body = {
         user: {
+          name: "tester",
           email: "test@test.com", 
           password: "password"
         }
@@ -56,6 +57,8 @@ RSpec.describe "Authentication", type: :request do
       }
       get businesses_path, headers: headers
       expect(response).to have_http_status(200)
+      puts User.last.inspect
+      expect(User.last.name).to eq("tester")
     end
   end
 
