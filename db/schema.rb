@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_25_065657) do
+ActiveRecord::Schema.define(version: 2021_02_06_221834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,24 @@ ActiveRecord::Schema.define(version: 2021_01_25_065657) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "email_address"
+    t.bigint "user_id", null: false
+    t.string "phone_number"
+    t.index ["user_id"], name: "index_businesses_on_user_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "city"
+    t.string "state"
+    t.string "zipcode"
+    t.string "phone_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "business_id", null: false
+    t.string "country"
+    t.index ["business_id"], name: "index_locations_on_business_id"
   end
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -62,5 +80,7 @@ ActiveRecord::Schema.define(version: 2021_01_25_065657) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "businesses", "users"
+  add_foreign_key "locations", "businesses"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
 end

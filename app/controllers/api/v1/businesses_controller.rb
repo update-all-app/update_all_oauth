@@ -1,4 +1,4 @@
-class BusinessesController < ApplicationController
+class Api::V1::BusinessesController < ApplicationController
   # before_action :authenticate_user!
   before_action :set_business, only: [:show, :update, :destroy]
 
@@ -14,11 +14,10 @@ class BusinessesController < ApplicationController
   end
 
   # POST /businesses
-  def create
-    @business = Business.new(business_params)
-
+  def create 
+    @business = current_user.businesses.build(business_params)
     if @business.save
-      render json: @business, status: :created, location: @business
+      render json: @business, status: :created
     else
       render json: @business.errors, status: :unprocessable_entity
     end
@@ -46,6 +45,6 @@ class BusinessesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def business_params
-      params.require(:business).permit(:name, :address)
+      params.require(:business).permit(:name, :email_address, :phone_number, locations_attributes: [:address_line_1, :address_line_2, :city, :state, :zipcode, :country, :phone_number])
     end
 end

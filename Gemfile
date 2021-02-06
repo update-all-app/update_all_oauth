@@ -41,6 +41,7 @@ end
 group :test do 
   gem "rspec-rails", "~> 4.0"
   gem 'database_cleaner-active_record'
+  gem "faker", "~> 2.15"
 
 end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -53,5 +54,6 @@ gem "doorkeeper", "~> 5.4"
 
 
 gem "faraday", "~> 1.3"
+
 
 
