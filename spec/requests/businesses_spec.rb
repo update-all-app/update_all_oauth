@@ -37,6 +37,7 @@ RSpec.describe "Businesses", type: :request do
         expect(business.email_address).to eq(body[:business][:email_address])
         expect(business.phone_number).to eq(body[:business][:phone_number])
         location = business.locations.last
+        
         expect(location.address_line_1).to eq(body[:business][:locations_attributes][0][:address_line_1])
         expect(location.address_line_2).to eq(body[:business][:locations_attributes][0][:address_line_2])
         expect(location.city).to eq(body[:business][:locations_attributes][0][:city])

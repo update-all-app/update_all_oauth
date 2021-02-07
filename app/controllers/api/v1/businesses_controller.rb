@@ -4,8 +4,8 @@ class Api::V1::BusinessesController < ApplicationController
 
   # GET /businesses
   def index
-    @businesses = Business.all
-    render json: @businesses
+    @businesses = current_user.businesses
+    render json: @businesses.to_json(include: [:locations])
   end
 
   # GET /businesses/1
@@ -17,7 +17,7 @@ class Api::V1::BusinessesController < ApplicationController
   def create 
     @business = current_user.businesses.build(business_params)
     if @business.save
-      render json: @business, status: :created
+      render json: @business.to_json(include: [:locations]), status: :created
     else
       render json: @business.errors, status: :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class Api::V1::BusinessesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_business
-      @business = Business.find(params[:id])
+      @business = current_user.businesses.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

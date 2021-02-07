@@ -1,8 +1,8 @@
 module ControllerMacros 
   def load_client 
-    @client ||= Doorkeeper::Application.create(name: "React client")
-    ENV["REACT_CLIENT_UID"] = @client.uid
-    ENV["REACT_CLIENT_SECRET"] = @client.secret
+    @oauth_client ||= Doorkeeper::Application.create(name: "React client")
+    ENV["REACT_CLIENT_UID"] = @oauth_client.uid
+    ENV["REACT_CLIENT_SECRET"] = @oauth_client.secret
   end
   def login_user(with_businesses: false) 
     load_client

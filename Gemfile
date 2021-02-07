@@ -29,6 +29,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem "dotenv-rails", "~> 2.7"
   gem "factory_bot_rails", "~> 6.1"
+  gem "rspec_api_documentation", "~> 6.1"
 end
 
 group :development do
@@ -54,6 +55,7 @@ gem "doorkeeper", "~> 5.4"
 
 
 gem "faraday", "~> 1.3"
+
 
 
 
