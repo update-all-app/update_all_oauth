@@ -25,7 +25,7 @@ class Users::SessionsController < Devise::SessionsController
     else
       render json: {
         message: "Couldn't refresh the token"
-      }, stuats: :unprocessable_entity
+      }, status: :unprocessable_entity
     end
   end
 

@@ -1,5 +1,4 @@
 class Api::V1::BusinessesController < ApplicationController
-  # before_action :authenticate_user!
   before_action :set_business, only: [:show, :update, :destroy]
 
   # GET /businesses

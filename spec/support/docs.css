@@ -1,0 +1,26 @@
+body {  
+  font-family: sans-serif;
+  background: rgb(200, 228, 245)
+}
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+pre {
+  background: #e4e5e6;
+  padding: 1em;
+  overflow: scroll;
+}
+
+ul {
+  list-style: none;
+  padding-left: 1em;
+}
+li {
+  margin: 1em 0;
+}
+
+a {
+  color: #341eb8;
+}

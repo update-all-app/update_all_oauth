@@ -2,9 +2,10 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
+  before_action :configure_account_update_params, only: [:update]
   respond_to :json
-  skip_before_action :doorkeeper_authorize!
+  skip_before_action :doorkeeper_authorize!, except: [:update]
+  skip_before_action :authenticate_scope!, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -22,9 +23,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    super
+    
+  end
 
   # DELETE /resource
   # def destroy
@@ -51,7 +53,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       render json: {
         user: resource,
         token: @token,
-        message: "Signed up successfully"
+        message: request.method == "POST" ? "Signed up successfully" : "Account updated successfully"
       }, status: :ok
     else
       render json: {
@@ -69,8 +71,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_account_update_params
-  #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
+  def configure_account_update_params
+    devise_parameter_sanitizer.permit(:account_update, keys: [:email, :name, :payment_status_current])
+  end
+
+  # def account_update_params
+  #   params.require(:user).permit(:email, :name, :payment_status)
   # end
 
   # The path used after sign up.

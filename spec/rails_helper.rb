@@ -63,3 +63,19 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+module RspecApiDocumentation
+  class RackTestClient < ClientBase
+    def response_body
+      if last_response.headers["Content-Type"].include?("json")
+        last_response.body.encode("utf-8")
+      else
+        "[binary data]"
+      end
+    end
+  end
+end
+
+RspecApiDocumentation.configure do |config|
+  config.html_embedded_css_file = Rails.root.join("spec/support/docs.css")
+end
