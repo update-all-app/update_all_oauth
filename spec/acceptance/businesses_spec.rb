@@ -1,5 +1,4 @@
-require 'rails_helper'
-require 'rspec_api_documentation/dsl'
+require 'acceptance_helper'
 
 resource "Businesses" do 
   header "Accept", "application/json"

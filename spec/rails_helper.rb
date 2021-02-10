@@ -75,7 +75,3 @@ module RspecApiDocumentation
     end
   end
 end
-
-RspecApiDocumentation.configure do |config|
-  config.html_embedded_css_file = Rails.root.join("spec/support/docs.css")
-end

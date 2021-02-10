@@ -1,5 +1,4 @@
-require 'rails_helper'
-require 'rspec_api_documentation/dsl'
+require 'acceptance_helper'
 
 resource "Users & Authentication" do 
   header "Accept", "application/json"
