@@ -4,6 +4,7 @@ require 'rspec_api_documentation/dsl'
 resource "Businesses" do 
   header "Accept", "application/json"
   header "Content-Type", "application/json"
+  header "Host", "https://update-it-all.dakotaleemartinez.com"
   before(:all) do 
     load_client
   end
