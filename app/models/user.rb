@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   
   validates :email, format: URI::MailTo::EMAIL_REGEXP
+  has_many :provider_oauth_tokens
   
   # the authenticate method from devise documentation
   def self.authenticate(email, password)

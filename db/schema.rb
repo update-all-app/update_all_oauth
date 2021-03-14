@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_10_053537) do
+ActiveRecord::Schema.define(version: 2021_03_14_001713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,17 @@ ActiveRecord::Schema.define(version: 2021_02_10_053537) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "provider_oauth_tokens", force: :cascade do |t|
+    t.string "provider"
+    t.string "access_token"
+    t.string "refresh_token"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "expires_in"
+    t.index ["user_id"], name: "index_provider_oauth_tokens_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -76,7 +87,11 @@ ActiveRecord::Schema.define(version: 2021_02_10_053537) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
-    t.boolean "payment_status_current"
+    t.boolean "payment_status_current", default: false, null: false
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -84,4 +99,5 @@ ActiveRecord::Schema.define(version: 2021_02_10_053537) do
   add_foreign_key "businesses", "users"
   add_foreign_key "locations", "businesses"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "provider_oauth_tokens", "users"
 end

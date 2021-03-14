@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   end
   namespace :api do 
     namespace :v1 do 
+      resources :provider_oauth_tokens, only: [:create]
       resources :businesses
       resources :locations
       get '/me', to: 'current_user#index'
