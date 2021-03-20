@@ -15,9 +15,9 @@ class Api::V1::ProviderOauthTokensController < ApplicationController
 
   # POST /provider_oauth_tokens
   def create
-    @provider_oauth_token = current_user.provider_oauth_tokens.build(provider_oauth_token_params)
+    @provider_oauth_token = current_user.provider_oauth_tokens.find_or_create_by(existing_token_params)
 
-    @provider_oauth_token.retrieve
+    @provider_oauth_token.retrieve(exchange_token_params[:exchange_token])
     if @provider_oauth_token.save
       render json: @provider_oauth_token, status: :created
     else
@@ -46,7 +46,11 @@ class Api::V1::ProviderOauthTokensController < ApplicationController
     # end
 
     # Only allow a list of trusted parameters through.
-    def provider_oauth_token_params
-      params.require(:provider_oauth_token).permit(:provider, :exchange_token)
+    def exchange_token_params
+      params.require(:provider_oauth_token).permit(:exchange_token)
+    end
+
+    def existing_token_params
+      params.require(:provider_oauth_token).permit(:provider, :provider_uid)
     end
 end
