@@ -10,7 +10,7 @@ class FacebookApiService
     end
     # not sure if this is doing too much here and possibly hiding error cases
     # that we're not aware of at the moment
-    JSON.parse(res.body)["access_token"]
+    JSON.parse(resp.body)["access_token"]
   end
 
   def initialize(provider_oauth_token)
