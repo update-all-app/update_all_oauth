@@ -3,7 +3,8 @@ class UserSerializer
   has_many :provider_oauth_tokens
   
   attributes :id, :name, :email
-  attribute :confirmed do |user|
-    !!user.confirmed_at
-  end
+  # add this when we get email confirmation finished
+  # attribute :confirmed do |user|
+  #   !!user.confirmed_at
+  # end
 end

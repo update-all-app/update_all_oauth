@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "name": "Test",
+  "email": "test@test.com",
+  "confirmed": true,
+  "services": [
+    {
+      "provider": "facebook",
+      "provider_uid": "10101969662612264",
+      "label": "Dakota Lee"
+    }
+  ]
+}
