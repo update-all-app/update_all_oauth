@@ -93,7 +93,9 @@ resource "Users & Authentication" do
     end
 
     example "get '/api/v1/me' with valid headers" do 
-      login_user 
+      explanation "when valid headers are presented, the endpoint will respond with user data and an array of services on which this user has authorized UpdateItAll to manage their businesses. The services will consist of the provider, provider_uid, and a label which indicates which pages/businesses connected to that provider account have been authorized as manageable by the access token returned from the Oauth consent flow."
+
+      login_user(with_services: true)
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(200)
