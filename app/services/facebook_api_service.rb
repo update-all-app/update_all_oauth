@@ -10,8 +10,6 @@ class FacebookApiService
     end
     # not sure if this is doing too much here and possibly hiding error cases
     # that we're not aware of at the moment
-    puts "access_token response"
-    puts JSON.parse(resp.body)
     JSON.parse(resp.body)["access_token"]
   end
 
@@ -24,8 +22,6 @@ class FacebookApiService
       req.params['access_token'] = pot.access_token
     end
     json = JSON.parse(res.body)
-    puts "json response from facebook:" 
-    puts json
     json["data"] && json["data"].map{ |page| page["name"] }.join(', ')
   end
 end
