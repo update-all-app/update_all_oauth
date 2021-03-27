@@ -22,6 +22,6 @@ class FacebookApiService
       req.params['access_token'] = pot.access_token
     end
     json = JSON.parse(res.body)
-    json["data"].map{ |page| page["name"] }.join(', ')
+    json["data"] && json["data"].map{ |page| page["name"] }.join(', ')
   end
 end
