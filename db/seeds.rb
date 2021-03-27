@@ -10,3 +10,8 @@ if Doorkeeper::Application.count.zero?
   Doorkeeper::Application.create(name: "Android client", redirect_uri: "", scopes: "")
   Doorkeeper::Application.create(name: "React client", redirect_uri: "", scopes: "")
 end
+
+client = Doorkeeper::Application.find_by_name("React client")
+puts "Add the following to your .env file"
+puts "REACT_CLIENT_UID=#{client.uid}"
+puts "REACT_CLIENT_SECRET=#{client.secret}"

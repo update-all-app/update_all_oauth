@@ -1,5 +1,11 @@
 # Update All Oauth
 
+## Getting Started 
+
+
+
+
+
 ```
 rails g scaffold business name 
 ```
