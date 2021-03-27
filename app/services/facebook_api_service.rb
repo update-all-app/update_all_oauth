@@ -10,6 +10,8 @@ class FacebookApiService
     end
     # not sure if this is doing too much here and possibly hiding error cases
     # that we're not aware of at the moment
+    puts "access_token response"
+    puts JSON.parse(resp.body)
     JSON.parse(resp.body)["access_token"]
   end
 
