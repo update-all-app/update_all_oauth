@@ -15,4 +15,5 @@ class User < ApplicationRecord
   has_many :businesses
   has_many :locations, through: :businesses
   has_many :regular_events
+  has_many :irregular_events
 end

@@ -28,15 +28,16 @@ resource "Regular Events for a Location" do
     login_user(with_businesses: true, with_locations: true, with_location_regular_events: true)
   end
 
-  get "/api/v1/locations/7/regular_events" do 
-    example "Listing regular schedule events for a particular location" do
+  get "/api/v1/locations/:location_id/regular_events" do 
+    let(:location_id) {@user.locations.last.id}
+    example "Listing regular events for a particular location" do
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(200)
     end
   end
   
-  post "/api/v1/locations/11/regular_events" do 
+  post "/api/v1/locations/:location_id/regular_events" do 
     body = {
       regular_event: {
         day_of_week: 0,
@@ -45,7 +46,8 @@ resource "Regular Events for a Location" do
       }
     }
     let(:raw_post) { JSON.pretty_generate(body) }
-    example "Creating a regular schedule event that belongs to a particular location" do 
+    let(:location_id) {@user.locations.last.id}
+    example "Creating a regular event that belongs to a particular location" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(201)
@@ -63,15 +65,16 @@ resource "Regular Events for a Business" do
     login_user(with_businesses: true, with_locations: true, with_business_regular_events: true)
   end
 
-  get "/api/v1/businesses/12/regular_events" do 
-    example "Listing regular schedule events for a particular business" do 
+  get "/api/v1/businesses/:business_id/regular_events" do 
+    let(:business_id) {@user.businesses.last.id}
+    example "Listing regular events for a particular business" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(200)
     end
   end
 
-  post "/api/v1/businesses/12/regular_events" do 
+  post "/api/v1/businesses/:business_id/regular_events" do 
     body = {
       regular_event: {
         day_of_week: 0,
@@ -80,7 +83,8 @@ resource "Regular Events for a Business" do
       }
     }
     let(:raw_post) { JSON.pretty_generate(body) }
-    example "Creating a regular schedule event that belongs to a particular business" do 
+    let(:business_id) {@user.businesses.last.id}
+    example "Creating a regular event that belongs to a particular business" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(201)
@@ -98,7 +102,7 @@ resource "Regular Events" do
     login_user(with_businesses: true, with_locations: true, with_location_regular_events: true)
   end
 
-  patch "/api/v1/regular_events/17" do 
+  patch "/api/v1/regular_events/:id" do 
     body = {
       regular_event: {
         day_of_week: 0,
@@ -107,15 +111,17 @@ resource "Regular Events" do
       }
     }
     let(:raw_post) { JSON.pretty_generate(body) }
-    example "Updating a regular schedule event" do 
+    let(:id) { @user.regular_events.last.id }
+    example "Updating a regular event" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(200)
     end
   end
 
-  delete "/api/v1/regular_events/17" do 
-    example "Deleting a regular schedule event" do
+  delete "/api/v1/regular_events/:id" do 
+    let(:id) { @user.regular_events.last.id}
+    example "Deleting a regular event" do
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(200)

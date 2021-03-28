@@ -19,12 +19,15 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
       resources :provider_oauth_tokens, only: [:create]
+      resources :irregular_events, only: [:update, :destroy]
       resources :regular_events, only: [:update, :destroy]
       resources :businesses do 
-        resources :regular_events
+        resources :regular_events, only: [:index, :create]
+        resources :irregular_events, only: [:index, :create]
       end
       resources :locations do
-        resources :regular_events
+        resources :regular_events, only: [:index, :create]
+        resources :irregular_events, only: [:index, :create]
       end
       get '/me', to: 'current_user#index'
     end

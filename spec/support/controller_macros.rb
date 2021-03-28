@@ -55,26 +55,22 @@ module ControllerMacros
 
     if with_location_irregular_events
       @location = @user.locations.first
-      5.times do |i|
-        @user.irregular_events.create(
-          day_of_week: i,
-          start_time: '09:00',
-          end_time: '17:00',
-          schedulable: @location
-        )
-      end
+      @user.irregular_events.create(
+        status: 'closed',
+        start_time: '2021-12-25 00:00:00',
+        end_time: '2021-12-25 23:59:59',
+        schedulable: @location
+      )
     end
 
     if with_business_irregular_events
       @business = @user.businesses.first
-      5.times do |i|
-        @user.irregular_events.create(
-          day_of_week: i,
-          start_time: '09:00',
-          end_time: '17:00',
-          schedulable: @business
-        )
-      end
+      @user.irregular_events.create(
+        status: 'closed',
+        start_time: '2021-12-25 00:00:00',
+        end_time: '2021-12-25 23:59:59',
+        schedulable: @business
+      )
     end
 
     token = TokenService.new(user: @user).get_token

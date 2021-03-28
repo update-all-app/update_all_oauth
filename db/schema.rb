@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_28_055021) do
+ActiveRecord::Schema.define(version: 2021_03_28_194816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,18 @@ ActiveRecord::Schema.define(version: 2021_03_28_055021) do
     t.bigint "user_id", null: false
     t.string "phone_number"
     t.index ["user_id"], name: "index_businesses_on_user_id"
+  end
+
+  create_table "irregular_events", force: :cascade do |t|
+    t.integer "status"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.bigint "schedulable_id"
+    t.string "schedulable_type"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_irregular_events_on_user_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -111,6 +123,7 @@ ActiveRecord::Schema.define(version: 2021_03_28_055021) do
   end
 
   add_foreign_key "businesses", "users"
+  add_foreign_key "irregular_events", "users"
   add_foreign_key "locations", "businesses"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "provider_oauth_tokens", "users"
