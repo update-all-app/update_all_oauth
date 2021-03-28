@@ -1,6 +1,5 @@
 class Api::V1::RegularEventsController < ApplicationController
   before_action :set_regular_event, only: [:show, :update, :destroy]
-  skip_before_action :doorkeeper_authorize!
   before_action :set_business
   before_action :set_location
 
