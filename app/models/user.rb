@@ -13,4 +13,6 @@ class User < ApplicationRecord
     user&.valid_password?(password) ? user : nil
   end
   has_many :businesses
+  has_many :locations, through: :businesses
+  has_many :regular_events
 end
