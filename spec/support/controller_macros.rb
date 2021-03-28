@@ -9,7 +9,9 @@ module ControllerMacros
     with_locations: false, 
     with_services: false, 
     with_location_regular_events: false,
-    with_business_regular_events: false
+    with_business_regular_events: false,
+    with_location_irregular_events: false,
+    with_business_irregular_events: false
   ) 
     load_client
     if with_businesses && with_locations
@@ -43,6 +45,30 @@ module ControllerMacros
       @business = @user.businesses.first
       5.times do |i|
         @user.regular_events.create(
+          day_of_week: i,
+          start_time: '09:00',
+          end_time: '17:00',
+          schedulable: @business
+        )
+      end
+    end
+
+    if with_location_irregular_events
+      @location = @user.locations.first
+      5.times do |i|
+        @user.irregular_events.create(
+          day_of_week: i,
+          start_time: '09:00',
+          end_time: '17:00',
+          schedulable: @location
+        )
+      end
+    end
+
+    if with_business_irregular_events
+      @business = @user.businesses.first
+      5.times do |i|
+        @user.irregular_events.create(
           day_of_week: i,
           start_time: '09:00',
           end_time: '17:00',

@@ -11,6 +11,12 @@ pre {
   background: #e4e5e6;
   padding: 1em;
   overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+}
+
+pre::-webkit-scrollbar {
+  display: none;
 }
 
 ul {

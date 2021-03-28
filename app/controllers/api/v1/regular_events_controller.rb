@@ -11,23 +11,22 @@ class Api::V1::RegularEventsController < ApplicationController
     elsif @business
       @regular_events = @business.regular_events
     else
-      @regular_events = RegularEvent.all
+      @regular_events = current_user.regular_events
     end
     
     render json: @regular_events
   end
 
-  # GET /regular_events/1
-  def show
-    render json: @regular_event
-  end
-
   # POST /regular_events
   def create
-    @regular_event = RegularEvent.new(regular_event_params)
-
+    @regular_event = current_user.regular_events.build(regular_event_params)
+    if @location
+      @regular_event.schedulable = @location
+    elsif @business
+      @regular_event.schedulable = @business
+    end
     if @regular_event.save
-      render json: @regular_event, status: :created, location: @regular_event
+      render json: @regular_event, status: :created
     else
       render json: @regular_event.errors, status: :unprocessable_entity
     end
@@ -45,6 +44,7 @@ class Api::V1::RegularEventsController < ApplicationController
   # DELETE /regular_events/1
   def destroy
     @regular_event.destroy
+    render json: @regular_event
   end
 
   private
@@ -58,7 +58,7 @@ class Api::V1::RegularEventsController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_regular_event
-      @regular_event = RegularEvent.find(params[:id])
+      @regular_event = current_user.regular_events.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

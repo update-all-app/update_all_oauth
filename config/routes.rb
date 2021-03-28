@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
       resources :provider_oauth_tokens, only: [:create]
+      resources :regular_events, only: [:update, :destroy]
       resources :businesses do 
         resources :regular_events
       end
