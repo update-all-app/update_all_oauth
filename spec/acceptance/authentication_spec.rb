@@ -19,7 +19,11 @@ resource "Users & Authentication" do
     
     example "post '/login' with valid credentials" do
       explanation "when valid credentials are provided, the endpoint will respond with user data and an access token which may be used as an authorization header to access protected resources."
-      user
+      user.provider_oauth_tokens.create(
+        provider: ["Facebook"].sample, 
+        provider_uid: rand(9959300543630775...10159300543630775),
+        label: 'Page1, Page2'
+      )
       do_request
       expect(status).to eq(200)
     end

@@ -48,8 +48,10 @@ class Users::SessionsController < Devise::SessionsController
 
   def respond_with(resource,_opts = {})
     if resource.persisted?
+      user = UserSerializer.new(resource, include: [:provider_oauth_tokens]).serializable_hash
+      user_data = user[:data][:attributes].merge(services: user[:included].map{|pot| pot[:attributes]})
       render json: {
-        user: resource,
+        user: user_data,
         token: @token, 
         message: "Logged in Successfully"
       }, status: :ok
