@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails"
+gem "rails", "~> 6.1"
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 # Use Puma as the app server
@@ -39,7 +39,7 @@ group :development do
   gem "spring-watcher-listen", "~> 2.0.0"
 end
 
-group :test do 
+group :test do
   gem "rspec-rails", "~> 4.0"
   gem "database_cleaner-active_record"
   gem "faker", "~> 2.15"
@@ -54,4 +54,3 @@ gem "omniauth-oauth2"
 gem "doorkeeper", "~> 5.4"
 gem "faraday", "~> 1.3"
 gem "jsonapi-serializer", "~> 2.2"
-
