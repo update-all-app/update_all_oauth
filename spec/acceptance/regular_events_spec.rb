@@ -10,7 +10,7 @@ resource "Regular Events for a Location" do
   end
 
   get "/api/v1/locations/:location_id/regular_events" do 
-    let(:location_id) {@user.locations.last.id}
+    let(:location_id) {@user.locations.first.id}
     example "Listing regular events for a particular location" do
       header "Authorization", "Bearer #{@access_token}"
       do_request
@@ -27,7 +27,7 @@ resource "Regular Events for a Location" do
       }
     }
     let(:raw_post) { JSON.pretty_generate(body) }
-    let(:location_id) {@user.locations.last.id}
+    let(:location_id) {@user.locations.first.id}
     example "Creating a regular event that belongs to a particular location" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request
@@ -47,7 +47,7 @@ resource "Regular Events for a Business" do
   end
 
   get "/api/v1/businesses/:business_id/regular_events" do 
-    let(:business_id) {@user.businesses.last.id}
+    let(:business_id) {@user.businesses.first.id}
     example "Listing regular events for a particular business" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request
@@ -64,7 +64,7 @@ resource "Regular Events for a Business" do
       }
     }
     let(:raw_post) { JSON.pretty_generate(body) }
-    let(:business_id) {@user.businesses.last.id}
+    let(:business_id) {@user.businesses.first.id}
     example "Creating a regular event that belongs to a particular business" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request

@@ -30,7 +30,7 @@ resource "Irregular Events for a Location" do
   end
 
   get "/api/v1/locations/:location_id/irregular_events" do 
-    let(:location_id) { @user.locations.last.id }
+    let(:location_id) { @user.locations.first.id }
     example "Listing irregular events for a particular location" do
       header "Authorization", "Bearer #{@access_token}"
       do_request
@@ -39,7 +39,7 @@ resource "Irregular Events for a Location" do
   end
   
   post "/api/v1/locations/:location_id/irregular_events" do 
-    let(:location_id) { @user.locations.last.id }
+    let(:location_id) { @user.locations.first.id }
     body = {
       irregular_event: {
         status: 'closed',
@@ -67,7 +67,7 @@ resource "Irregular Events for a Business" do
   end
 
   get "/api/v1/businesses/:business_id/irregular_events" do 
-    let(:business_id) { @user.businesses.last.id }
+    let(:business_id) { @user.businesses.first.id }
     example "Listing irregular events for a particular business" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request
@@ -76,7 +76,7 @@ resource "Irregular Events for a Business" do
   end
 
   post "/api/v1/businesses/:business_id/irregular_events" do 
-    let(:business_id) { @user.businesses.last.id }
+    let(:business_id) { @user.businesses.first.id }
     body = {
       irregular_event: {
         status: 'closed',
