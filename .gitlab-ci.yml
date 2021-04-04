@@ -1,17 +1,13 @@
 image: ilyasemenov/gitlab-ci-git-push
 
 stages:
-  - test
   - deploy
 
 variables:
   APP_NAME: backend
   APP_URL: update-it-all.dakotaleemartinez.com
 
-test:
-  script:
-    - bundle exec rspec
-    
+
 deploy:
   image: ilyasemenov/gitlab-ci-git-push
   stage: deploy
