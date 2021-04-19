@@ -10,11 +10,11 @@ RSpec.describe "Authentication", type: :request do
       get api_v1_businesses_path
       expect(response).to have_http_status(401)
       # logging in will return a 200 status code with correct credentials
-      @user = FactoryBot.create(:user)
+      @user = FactoryBot.create(:user, email: 'authtest@test.com')
       
       body = {
         user: {
-          email: "test@test.com", 
+          email: "authtest@test.com", 
           password: "password"
         }
       }

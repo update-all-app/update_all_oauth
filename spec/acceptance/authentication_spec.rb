@@ -7,11 +7,11 @@ resource "Users & Authentication" do
   before(:all) do 
     load_client
   end
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { FactoryBot.create(:user, email: 'authtest@test.com') }
   post "/login" do 
     body = {
       user: {
-        email: "test@test.com", 
+        email: "authtest@test.com", 
         password: "password"
       }
     }
