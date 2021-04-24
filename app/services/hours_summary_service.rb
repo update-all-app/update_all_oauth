@@ -1,9 +1,3 @@
-HoursSummaryService = Struct.new(
-  :reg_events,
-  :irreg_events,
-  :start_date,
-  :end_date
-)
 # Will receive an array of value objects for
 # regular and irregular events
 class HoursSummaryService
@@ -56,55 +50,45 @@ class HoursSummaryService
       end
       build_day(
         regular_events: regular_events, 
-        irregular_events: irregular_events,
-        day: d
+        irregular_events: irregular_events
       )
       
-    end
+    end.flatten
   end
 
   # We'll need to make sure that irregular events only belong to a single day.
 
-  def build_day(irregular_events:, regular_events:, day:)
+  def build_day(irregular_events:, regular_events:)
     if irregular_events.any?
       irregular_for_location = irregular_events.select {|e| e.schedulable_type == "Location"}
       if irregular_for_location.any? 
         irregular_for_location.select{|ie| ie.status == "open" }.map do |ie|
           ScheduleEvent.new(
             ie.days_from_start_date(start_date),
-            ie.start_time,
-            ie.end_time
+            ie.start_time_24hr,
+            ie.end_time_24hr
           )
         end
       else
         # not going to be used for the near future
+        nil
       end
     else
       # if there are no irregular events, make schedule events from regular events
+      regular_events_for_loation = regular_events.select {|e| e.scheduleable_type == "Location"}
+      if regular_events_for_location.any?
+        regular_events_for_location.map do |reg_event| 
+          ScheduleEvent.new(
+            reg_event.day_from_week_start_at(start_date.wday),
+            reg_event.start_time,
+            reg_event.end_time
+          )
+        end
+      else
+        # not going to be used in the near future
+        nil
+      end
     end
   end
 
-  def irregular_events
-    @irregular_events ||= irreg_events.map do |irregular_event|
-      IrregEvent.new(
-        irregular_event.status,
-        irregular_event.start_time,
-        irregular_event.end_time,
-        irregular_event.schedulable_type,
-        false
-      )
-    end
-  end
-
-  def regular_events
-    @regular_events ||= reg_events.map do |regular_event|
-      RegEvent.new(
-        regular_event.day_of_week,
-        regular_event.start_time,
-        regular_event.end_time,
-        regular_event.schedulable_type,
-        false
-      )
-    end
-  end
 end
