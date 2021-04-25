@@ -29,7 +29,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem "dotenv-rails", "~> 2.7"
   gem "factory_bot_rails", "~> 6.1"
-  gem "rspec_api_documentation", "~> 6.1"
+  gem "rspec_api_documentation", git: 'git@github.com:DakotaLMartinez/rspec_api_documentation.git'
 end
 
 group :development do

@@ -9,7 +9,7 @@ resource "Businesses" do
   end
   get "/api/v1/businesses" do 
     example "get '/api/v1/businesses'" do 
-      login_user(with_businesses: true, with_locations: true)
+      login_user(FactoryBot.create(:user, :with_businesses_and_locations))
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(200)
@@ -37,7 +37,7 @@ resource "Businesses" do
     }
     let(:raw_post) { JSON.pretty_generate(body) }
     example "post '/api/v1/businesses'" do 
-      login_user
+      login_user(FactoryBot.create(:user))
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(201)

@@ -28,6 +28,9 @@ Rails.application.routes.draw do
       resources :locations do
         resources :regular_events, only: [:index, :create]
         resources :irregular_events, only: [:index, :create]
+        member do 
+          get 'hours_summary', to: 'hours_summary#index'
+        end
       end
       get '/me', to: 'current_user#index'
     end

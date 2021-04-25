@@ -6,7 +6,7 @@ resource "Regular Events for a Location" do
   header "Host", "https://update-it-all.dakotaleemartinez.com"
 
   before(:all) do 
-    login_user(with_businesses: true, with_locations: true, with_location_regular_events: true)
+    login_user(FactoryBot.create(:user, :with_regular_events, schedulable: 'locations'))
   end
 
   get "/api/v1/locations/:location_id/regular_events" do 
@@ -43,7 +43,7 @@ resource "Regular Events for a Business" do
   header "Host", "https://update-it-all.dakotaleemartinez.com"
 
   before(:all) do 
-    login_user(with_businesses: true, with_locations: true, with_business_regular_events: true)
+    login_user(FactoryBot.create(:user, :with_regular_events, schedulable: 'businesses'))
   end
 
   get "/api/v1/businesses/:business_id/regular_events" do 
@@ -80,7 +80,7 @@ resource "Regular Events" do
   header "Host", "https://update-it-all.dakotaleemartinez.com"
 
   before(:all) do 
-    login_user(with_businesses: true, with_locations: true, with_location_regular_events: true)
+    login_user(FactoryBot.create(:user, :with_regular_events, schedulable: 'locations'))
   end
 
   patch "/api/v1/regular_events/:id" do 
