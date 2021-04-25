@@ -26,7 +26,7 @@ resource "Irregular Events for a Location" do
   header "Host", "https://update-it-all.dakotaleemartinez.com"
 
   before(:all) do 
-    login_user(with_businesses: true, with_locations: true, with_location_irregular_events: true)
+    login_user(FactoryBot.create(:user, :with_irregular_events, schedulable: 'locations'))
   end
 
   get "/api/v1/locations/:location_id/irregular_events" do 
@@ -63,7 +63,7 @@ resource "Irregular Events for a Business" do
   header "Host", "https://update-it-all.dakotaleemartinez.com"
 
   before(:all) do 
-    login_user(with_businesses: true, with_locations: true, with_business_irregular_events: true)
+    login_user(FactoryBot.create(:user, :with_irregular_events, schedulable: 'businesses'))
   end
 
   get "/api/v1/businesses/:business_id/irregular_events" do 
@@ -100,7 +100,7 @@ resource "Irregular Events" do
   header "Host", "https://update-it-all.dakotaleemartinez.com"
 
   before(:all) do 
-    login_user(with_businesses: true, with_locations: true, with_location_irregular_events: true)
+    login_user(FactoryBot.create(:user, :with_irregular_events, schedulable: 'locations'))
   end
 
   patch "/api/v1/irregular_events/:id" do 

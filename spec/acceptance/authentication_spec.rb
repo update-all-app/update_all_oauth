@@ -63,7 +63,7 @@ resource "Users & Authentication" do
   delete "/logout" do 
     example "delete '/logout' with valid auth header" do 
       explanation "If the request includes a valid access token, it returns a 200 status code and revokes the token so it will no longer provide access to protected resources."
-      login_user
+      login_user(FactoryBot.create(:user))
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(200)
@@ -78,7 +78,7 @@ resource "Users & Authentication" do
 
   post "/refresh_token" do 
     example "post '/refresh_token' with valid refresh_token in headers" do 
-      login_user 
+      login_user(FactoryBot.create(:user)) 
       header "Authorization", "Bearer #{@refresh_token}"
       do_request
       expect(status).to eq(200)
@@ -99,7 +99,7 @@ resource "Users & Authentication" do
     example "get '/api/v1/me' with valid headers" do 
       explanation "when valid headers are presented, the endpoint will respond with user data and an array of services on which this user has authorized UpdateItAll to manage their businesses. The services will consist of the provider, provider_uid, and a label which indicates which pages/businesses connected to that provider account have been authorized as manageable by the access token returned from the Oauth consent flow."
 
-      login_user(with_services: true)
+      login_user(FactoryBot.create(:user, :with_services))
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(200)
@@ -116,7 +116,7 @@ resource "Users & Authentication" do
     } 
     let(:raw_post) { JSON.pretty_generate(body) }
     example "put '/signup' with valid headers and params" do 
-      login_user
+      login_user(FactoryBot.create(:user))
       header "Authorization", "Bearer #{@access_token}"
       
       do_request

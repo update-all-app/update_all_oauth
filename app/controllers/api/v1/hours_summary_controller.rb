@@ -1,6 +1,5 @@
 class Api::V1::HoursSummaryController < ApplicationController
-  before_action :set_business, :set_location
-
+  before_action :set_location, :set_business, 
   def index 
     regular_events = current_user.regular_events.by_location(@location).map do |re|
       RegularEventValueObject.new(
@@ -22,18 +21,19 @@ class Api::V1::HoursSummaryController < ApplicationController
     render json: HoursSummaryService.new(
       regular_events: regular_events, 
       irregular_events: irregular_events,
-      start_date: params[:start_date], 
-      end_date: params[:end_date]
+      start_date: Date.parse(params[:start_date]), 
+      end_date: Date.parse(params[:end_date])
     ).call
   end
 
   private 
 
+  def set_location
+    @location = current_user.locations.find_by_id(params[:id])
+  end
+
   def set_business
     @business = @location.business
   end
 
-  def set_location
-    @location = current_user.locations.find_by_id(params[:id])
-  end
 end

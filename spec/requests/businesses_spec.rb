@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Businesses", type: :request do
   context "authenticated" do 
     before(:all) do 
-      login_user(with_businesses: true)
+      login_user(FactoryBot.create(:user, :with_businesses))
     end
     describe "GET /api/v1/businesses" do
       it "returns a collection of businesses belonging to the current user" do

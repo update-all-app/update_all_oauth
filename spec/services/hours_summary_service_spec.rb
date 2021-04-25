@@ -5,13 +5,13 @@ RSpec.describe HoursSummaryService do
     it "initializes with a location, start_date and end_date)" do
       # create an irregular event for a location
       irregular_event = FactoryBot.create(:irregular_event, :for_location, {
-        start_time: day_and_time_this_week("friday", "9:00"),
-        end_time: day_and_time_this_week("friday", "13:00")
+        start_time: day_and_time_this_week("friday", "2:00"),
+        end_time: day_and_time_this_week("friday", "6:00")
       })
       # create regular events for the same user and location
       user = irregular_event.user
       location = irregular_event.schedulable
-      regular_events = [0,1,2,3,4].map do |day_of_week|
+      regular_events = [1,2,3,4,5].map do |day_of_week|
         FactoryBot.create(:regular_event, :for_location, 
           day_of_week: day_of_week, 
           user: user,
@@ -40,31 +40,32 @@ RSpec.describe HoursSummaryService do
         start_date: beginning_of_week, 
         end_date: end_of_week
       )
+      
       expect(service.call).to eq([
         {
-          "days_after_start" => 0,
-          "start_time" => day_and_time_this_week("monday", "9:00"),
-          "end_time" => day_and_time_this_week("monday", "17:00")
+          :days_after_start => 0,
+          :end_time => "17:00",
+          :start_time => "09:00"
         },
         {
-          "days_after_start" => 1,
-          "start_time" => day_and_time_this_week("monday", "9:00"),
-          "end_time" => day_and_time_this_week("monday", "17:00")
+          :days_after_start => 1,
+          :end_time => "17:00",
+          :start_time => "09:00"
         },
         {
-          "days_after_start" => 2,
-          "start_time" => day_and_time_this_week("monday", "9:00"),
-          "end_time" => day_and_time_this_week("monday", "17:00")
+          :days_after_start => 2,
+          :end_time => "17:00",
+          :start_time => "09:00"
         },
         {
-          "days_after_start" => 3,
-          "start_time" => day_and_time_this_week("monday", "9:00"),
-          "end_time" => day_and_time_this_week("monday", "17:00")
+          :days_after_start => 3,
+          :end_time => "17:00",
+          :start_time => "09:00"
         },
         {
-          "days_after_start" => 4,
-          "start_time" => day_and_time_this_week("monday", "9:00"),
-          "end_time" => day_and_time_this_week("monday", "13:00")
+          :days_after_start => 4,
+          :end_time => "13:00",
+          :start_time => "09:00"
         },
       ])
     end
