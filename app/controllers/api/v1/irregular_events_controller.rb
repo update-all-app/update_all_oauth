@@ -29,8 +29,9 @@ class Api::V1::IrregularEventsController < ApplicationController
     elsif @business
       @irregular_event.schedulable = @business
     end
-    if @irregular_event.save
-      render json: @irregular_event, status: :created
+    split_events = MultiDayEventSplitterService.process(@irregular_event)
+    if split_events.all? {|e| e.save}
+      render json: split_events, status: :created
     else
       render json: @irregular_event.errors, status: :unprocessable_entity
     end

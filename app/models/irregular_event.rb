@@ -16,4 +16,10 @@ class IrregularEvent < ApplicationRecord
       schedulable_type: "Business"
     ))
   end
+
+  def clone(attributes)
+    s = self.schedulable
+    u = self.user
+    u.irregular_events.build(attributes.merge(schedulable: s))
+  end
 end

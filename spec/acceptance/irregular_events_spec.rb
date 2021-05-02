@@ -48,13 +48,29 @@ resource "Irregular Events for a Location" do
       }
     }
     let(:raw_post) { JSON.pretty_generate(body) }
-    example "Creating an irregular event that belongs to a particular location" do 
+    example "Creating single day irregular events that belongs to a particular location" do 
       header "Authorization", "Bearer #{@access_token}"
       do_request
       expect(status).to eq(201)
     end
   end
   
+  post "/api/v1/locations/:location_id/irregular_events" do 
+    let(:location_id) { @user.locations.first.id }
+    body = {
+      irregular_event: {
+        status: 'closed',
+        start_time: '2021-12-25 00:00:00',
+        end_time: '2021-12-26 23:59:59'
+      }
+    }
+    let(:raw_post) { JSON.pretty_generate(body) }
+    example "Creating multi day irregular event events that belongs to a particular location" do 
+      header "Authorization", "Bearer #{@access_token}"
+      do_request
+      expect(status).to eq(201)
+    end
+  end
 end
 
 resource "Irregular Events for a Business" do

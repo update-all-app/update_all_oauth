@@ -31,3 +31,17 @@ def day_and_time_this_week(day, time)
   raise StandardError.new("Minutes must be between 0 and 60") unless 0 <= minutes && minutes < 60
   beginning_of_week + DAYS[day].days + hours.hours + minutes.minutes
 end
+
+def date_to_midnight_utc(date)
+  DateTime.new(date.year, date.month, date.day)
+end
+
+def datetime_to_utc(datetime)
+  DateTime.new(
+    datetime.year, 
+    datetime.month, 
+    datetime.day, 
+    datetime.hour, 
+    datetime.min
+  )
+end
