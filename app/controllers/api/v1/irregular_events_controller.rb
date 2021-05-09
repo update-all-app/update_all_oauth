@@ -29,8 +29,8 @@ class Api::V1::IrregularEventsController < ApplicationController
     elsif @business
       @irregular_event.schedulable = @business
     end
-    split_events = MultiDayEventSplitterService.process(@irregular_event)
-    if split_events.all? {|e| e.save}
+    split_events = MultiDayEventSplitterService.process_create(@irregular_event)
+    if split_events.all? { |e| e.save }
       render json: split_events, status: :created
     else
       render json: @irregular_event.errors, status: :unprocessable_entity
@@ -40,7 +40,12 @@ class Api::V1::IrregularEventsController < ApplicationController
   # PATCH/PUT /irregular_events/1
   def update
     if @irregular_event.update(irregular_event_params)
-      render json: @irregular_event
+      split_events = MultiDayEventSplitterService.process_update(@irregular_event)
+      if split_events.all? { |e| e.save }
+        render json: split_events, status: :updated
+      else
+        render json: @irregular_event.errors, status: :unprocessale_entity
+      end
     else
       render json: @irregular_event.errors, status: :unprocessable_entity
     end
