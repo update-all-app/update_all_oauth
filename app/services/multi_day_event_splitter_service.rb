@@ -19,6 +19,7 @@ class MultiDayEventSplitterService
     start_date = irregular_event.start_time.to_date
     end_date = irregular_event.end_time.to_date
     if irregular_event.status == 'closed' && start_date != end_date
+      irregular_event.start_time = UtcDatetimeService.utc_from_date(start_date, start_of_day: true)
       irregular_event.end_time = UtcDatetimeService.utc_from_date(start_date, start_of_day: false)
       events = (start_date.next_day..end_date).map do |day|
         irregular_event.clone(

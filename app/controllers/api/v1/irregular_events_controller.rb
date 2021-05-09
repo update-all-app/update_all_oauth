@@ -42,9 +42,9 @@ class Api::V1::IrregularEventsController < ApplicationController
     if @irregular_event.update(irregular_event_params)
       split_events = MultiDayEventSplitterService.process_update(@irregular_event)
       if split_events.all? { |e| e.save }
-        render json: split_events, status: :updated
+        render json: split_events, status: :ok
       else
-        render json: @irregular_event.errors, status: :unprocessale_entity
+        render json: @irregular_event.errors, status: :unprocessable_entity
       end
     else
       render json: @irregular_event.errors, status: :unprocessable_entity

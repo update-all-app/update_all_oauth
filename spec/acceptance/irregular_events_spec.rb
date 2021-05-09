@@ -123,9 +123,9 @@ resource "Irregular Events" do
     let(:id) { @user.irregular_events.last.id }
     body = {
       irregular_event: {
-        status: 'open',
+        status: 'closed',
         start_time: '2021-12-24 9:00:00',
-        end_time: '2021-12-24 13:00:00'
+        end_time: '2021-12-25 23:59:59'
       }
     }
     let(:raw_post) { JSON.pretty_generate(body) }

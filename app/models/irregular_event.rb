@@ -3,6 +3,9 @@ class IrregularEvent < ApplicationRecord
   belongs_to :schedulable, polymorphic: true
   enum status: [:open, :closed]
 
+  # need to validate that start_time is before end_time
+  # need to validate that irregular events don't overlap for the same schedulable
+
   def self.between(start_date, end_date)
     where("start_time BETWEEN ? AND ?", start_date, end_date)
   end
