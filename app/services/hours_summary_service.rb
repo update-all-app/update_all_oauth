@@ -21,6 +21,7 @@ class HoursSummaryService
 
   ScheduleEvent = Struct.new(
     :days_after_start, 
+    :weekday,
     :start_time, 
     :end_time
   )
@@ -66,6 +67,7 @@ class HoursSummaryService
         irregular_for_location.select{|ie| ie.status == "open" }.map do |ie|
           ScheduleEvent.new(
             days_after_start,
+            ie.start_time.strftime("%a").downcase,
             ie.start_time_24hr,
             ie.end_time_24hr
           )
@@ -81,6 +83,7 @@ class HoursSummaryService
         regular_events_for_location.map do |reg_event| 
           ScheduleEvent.new(
             reg_event.day_from_week_start_at(start_date.wday),
+            (start_date + days_after_start).strftime("%a").downcase,
             reg_event.start_time,
             reg_event.end_time
           )

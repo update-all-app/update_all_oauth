@@ -38,8 +38,8 @@ FactoryBot.define do
     trait :with_regular_events do
       with_businesses_and_locations
       transient do
-        start_time { "09:00" }
-        end_time { "17:00" }
+        reg_start_time { "09:00" }
+        reg_end_time { "17:00" }
         schedulable { "location" }
       end
    
@@ -50,8 +50,8 @@ FactoryBot.define do
             user: user,
             schedulable: @schedulable,
             day_of_week: i + 1,
-            start_time: evaluator.start_time,
-            end_time: evaluator.end_time
+            start_time: evaluator.reg_start_time,
+            end_time: evaluator.reg_end_time
           })
         end
 
@@ -62,8 +62,8 @@ FactoryBot.define do
     trait :with_irregular_events do
       with_businesses_and_locations
       transient do 
-        start_time { (DateTime.now.beginning_of_week + 4.days + 9.hours).strftime('%Y-%m-%d %H:%M') }
-        end_time { (DateTime.now.beginning_of_week + 4.days + 17.hours).strftime('%Y-%m-%d %H:%M') }
+        irreg_start_time { (DateTime.now.beginning_of_week + 4.days + 9.hours).strftime('%Y-%m-%d %H:%M') }
+        irreg_end_time { (DateTime.now.beginning_of_week + 4.days + 13.hours).strftime('%Y-%m-%d %H:%M') }
         schedulable { "location" }
       end
 
@@ -72,8 +72,8 @@ FactoryBot.define do
         FactoryBot.create(:irregular_event, {
           user: user,
           schedulable: @schedulable,
-          start_time: evaluator.start_time,
-          end_time: evaluator.end_time
+          start_time: evaluator.irreg_start_time,
+          end_time: evaluator.irreg_end_time
         })
       end
     end
