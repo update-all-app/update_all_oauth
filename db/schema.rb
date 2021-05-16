@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_28_194816) do
+ActiveRecord::Schema.define(version: 2021_05_16_193321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,15 @@ ActiveRecord::Schema.define(version: 2021_03_28_194816) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_irregular_events_on_user_id"
+  end
+
+  create_table "location_services", force: :cascade do |t|
+    t.bigint "location_id", null: false
+    t.bigint "provider_oauth_token_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["location_id"], name: "index_location_services_on_location_id"
+    t.index ["provider_oauth_token_id"], name: "index_location_services_on_provider_oauth_token_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -124,6 +133,8 @@ ActiveRecord::Schema.define(version: 2021_03_28_194816) do
 
   add_foreign_key "businesses", "users"
   add_foreign_key "irregular_events", "users"
+  add_foreign_key "location_services", "locations"
+  add_foreign_key "location_services", "provider_oauth_tokens"
   add_foreign_key "locations", "businesses"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "provider_oauth_tokens", "users"

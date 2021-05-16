@@ -4,7 +4,12 @@ class Api::V1::BusinessesController < ApplicationController
   # GET /businesses
   def index
     @businesses = current_user.businesses
-    render json: @businesses.to_json(include: [:locations])
+    render json: @businesses.to_json(include: {
+      locations: { 
+        include: 
+        :provider_oauth_tokens
+      }
+    })
   end
 
   # GET /businesses/1

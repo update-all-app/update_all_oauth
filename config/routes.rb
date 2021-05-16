@@ -32,6 +32,7 @@ Rails.application.routes.draw do
           get 'hours_summary', to: 'hours_summary#index'
         end
       end
+      resources :location_services
       get '/me', to: 'current_user#index'
     end
   end 

@@ -45,27 +45,32 @@ RSpec.describe HoursSummaryService do
         {
           :days_after_start => 0,
           :end_time => "17:00",
-          :start_time => "09:00"
+          :start_time => "09:00",
+          :weekday => "mon"
         },
         {
           :days_after_start => 1,
           :end_time => "17:00",
-          :start_time => "09:00"
+          :start_time => "09:00",
+          :weekday => "tue"
         },
         {
           :days_after_start => 2,
           :end_time => "17:00",
-          :start_time => "09:00"
+          :start_time => "09:00",
+          :weekday => "wed"
         },
         {
           :days_after_start => 3,
           :end_time => "17:00",
-          :start_time => "09:00"
+          :start_time => "09:00",
+          :weekday => "thu"
         },
         {
           :days_after_start => 4,
           :end_time => "13:00",
-          :start_time => "09:00"
+          :start_time => "09:00",
+          :weekday => "fri"
         },
       ])
     end

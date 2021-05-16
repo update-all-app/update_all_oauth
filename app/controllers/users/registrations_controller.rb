@@ -50,8 +50,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def respond_with(resource,_opts = {})
     if resource.persisted?
-      user = UserSerializer.new(resource, include: [:provider_oauth_tokens]).serializable_hash
-      user_data = user[:data][:attributes].merge(services: user[:included].map{|pot| pot[:attributes]})
+      user_data = UserSerializerService.call(resource)
       render json: {
         user: user_data,
         token: @token,

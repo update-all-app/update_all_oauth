@@ -1,5 +1,7 @@
 class ProviderOauthToken < ApplicationRecord
   belongs_to :user
+  has_many :location_services
+  has_many :locations, through: :location_services
 
   def retrieve(exchange_token)
     if provider == "facebook"
