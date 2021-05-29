@@ -46,6 +46,6 @@ class Api::V1::LocationServicesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def location_service_params
-      params.require(:location_service).permit(:location_id, :provider_oauth_token_id)
+      params.require(:location_service).permit(:location_id, :provider_oauth_token_id, :page_id)
     end
 end
