@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_16_193321) do
+ActiveRecord::Schema.define(version: 2021_05_22_195439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2021_05_16_193321) do
     t.datetime "expires_at"
     t.string "provider_uid"
     t.string "label"
+    t.json "page_data"
     t.index ["user_id"], name: "index_provider_oauth_tokens_on_user_id"
   end
 
