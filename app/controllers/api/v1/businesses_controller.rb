@@ -7,7 +7,7 @@ class Api::V1::BusinessesController < ApplicationController
     render json: @businesses.to_json(include: {
       locations: { 
         include: 
-        :provider_oauth_tokens
+        :location_services
       }
     })
   end
