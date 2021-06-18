@@ -1,5 +1,5 @@
 class Api::V1::ProviderOauthTokensController < ApplicationController
-  # before_action :set_provider_oauth_token, only: [:show, :update, :destroy]
+  before_action :set_provider_oauth_token, only: [:destroy]
 
   # # GET /provider_oauth_tokens
   # def index
@@ -35,15 +35,15 @@ class Api::V1::ProviderOauthTokensController < ApplicationController
   # end
 
   # # DELETE /provider_oauth_tokens/1
-  # def destroy
-  #   @provider_oauth_token.destroy
-  # end
+  def destroy
+    @provider_oauth_token.destroy
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    # def set_provider_oauth_token
-    #   @provider_oauth_token = ProviderOauthToken.find(params[:id])
-    # end
+    def set_provider_oauth_token
+      @provider_oauth_token = current_user.provider_oauth_tokens.find(params[:id])
+    end
 
     # Only allow a list of trusted parameters through.
     def exchange_token_params
