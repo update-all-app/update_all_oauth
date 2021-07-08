@@ -1,7 +1,7 @@
 # Will receive an array of value objects for
 # regular and irregular events
 class HoursSummaryService
-  attr_reader :start_date, :end_date, :regular_events, :irregular_events
+  attr_reader :user, :location, :start_date, :end_date, :regular_events, :irregular_events
   DAYS = {
     "monday" => 1,
     "tuesday" => 2,
@@ -26,11 +26,27 @@ class HoursSummaryService
     :end_time
   )
 
-  def initialize(regular_events:, irregular_events:, start_date:, end_date:)
-    @regular_events = regular_events
-    @irregular_events = irregular_events
+  def initialize(user:, location:, start_date:, end_date:)
+    @user = user
+    @location = location
     @start_date = start_date
     @end_date = end_date
+    @regular_events = user.regular_events.by_location(location).map do |re|
+      RegularEventValueObject.new(
+        day_of_week: re.day_of_week,
+        start_time: re.start_time,
+        end_time: re.end_time,
+        schedulable_type: re.schedulable_type
+      )
+    end
+    @irregular_events = user.irregular_events.between(start_date, end_date).by_location(location).map do |ie|
+      IrregularEventValueObject.new(
+        status: ie.status,
+        start_time: ie.start_time,
+        end_time: ie.end_time,
+        schedulable_type: ie.schedulable_type
+      )
+    end
   end
 
   def call 

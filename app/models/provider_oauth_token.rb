@@ -14,7 +14,8 @@ class ProviderOauthToken < ApplicationRecord
       self.page_data = pages.map do |page| 
         {
           id: page["id"],
-          name: page["name"]
+          name: page["name"],
+          page_access_token: page["access_token"]
         }
       end
     end

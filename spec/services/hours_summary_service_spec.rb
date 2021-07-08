@@ -35,8 +35,8 @@ RSpec.describe HoursSummaryService do
         )
       end
       service = HoursSummaryService.new(
-        regular_events: regular_events, 
-        irregular_events: irregular_events, 
+        user: user, 
+        location: location, 
         start_date: beginning_of_week, 
         end_date: end_of_week
       )
