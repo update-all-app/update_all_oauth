@@ -1,5 +1,4 @@
-class FacebookApiService
-  attr_reader :pot
+class FacebookApiService < ApiService
 
   def self.get_access_token(exchange_token)
     resp = Faraday.get('https://graph.facebook.com/v10.0/oauth/access_token') do |req|
@@ -13,11 +12,6 @@ class FacebookApiService
     JSON.parse(resp.body)["access_token"]
   end
 
-  def initialize(provider_oauth_token)
-    @pot = provider_oauth_token
-    # @page_access_token = get_page_access_token
-  end
-
   def get_pages
     res = Faraday.get("https://graph.facebook.com/me/accounts") do |req|
       req.params['access_token'] = pot.access_token
@@ -29,6 +23,7 @@ class FacebookApiService
   # we have a page_id but we need to find the location
   # we'll find it by looking through the pot.location_services
   # pot.location_services.find_by(page_id: page_id).try(:location)
+  # this should return the response from the API parsed from JSON.
   def update_hours(page_id, start_date=Date.today.next_week, end_date=Date.today.next_week(:sunday))
     page = pot.page_data.find{|h| h["id"] == page_id}
     raise StandardError.new("Page with id: #{page_id} not found within scope of user access: #{pot.page_data}") unless page
@@ -38,12 +33,11 @@ class FacebookApiService
     location = location_service.location
     user = pot.user
     hours_as_array = HoursSummaryService.new(user: user, location: location, start_date: start_date, end_date: end_date).call
-    byebug
     res = Faraday.post("https://graph.facebook.com/#{page_id}") do |req|
       req.params['access_token'] = page_access_token
       req.params["hours"] = format_hours(hours_as_array).to_json
     end
-    byebug
+    JSON.parse(res.body)
   end
 
   def format_hours(hours_as_array)

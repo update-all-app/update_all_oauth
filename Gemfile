@@ -34,6 +34,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "rails-erd", "~> 1.6"
   gem "listen", "~> 3.2"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
@@ -55,3 +56,5 @@ gem "omniauth-oauth2"
 gem "doorkeeper", "~> 5.4"
 gem "faraday", "~> 1.3"
 gem "jsonapi-serializer", "~> 2.2"
+
+
