@@ -23,8 +23,8 @@ resource "Business Hours Summary" do
     let(:id) { @user.locations.first.id }
     # @user.locations.
     
-    let (:start_date) { DateTime.now.beginning_of_week.to_date }
-    let (:end_date) { DateTime.now.end_of_week.to_date }
+    let (:start_date) { DateTime.now.beginning_of_week.to_date - 1.day }
+    let (:end_date) { DateTime.now.end_of_week.to_date - 1.day }
     
     response_field :days_after_start, "Integer representing the number of days between the start date and the day to which the attached hours belong."
     response_field :start_time, "String in %Y-%m-%d %H:%M format representing the opening time"
@@ -32,7 +32,14 @@ resource "Business Hours Summary" do
      
     example "returns a summary of business hours for a location" do 
       header "Authorization", "Bearer #{@access_token}"
+      @user.irregular_events.create(status: 
+        "open", schedulable: @user.locations.first, start_time: (DateTime.now.end_of_week.to_date - 1.day + 8.hours), end_time: (DateTime.now.end_of_week.to_date - 1.day + 12.hours))
       do_request
+      bd = JSON.parse(response_body)      
+      saturday_hours = bd.find{|hash| hash["weekday"] == "sat"}
+      expect(saturday_hours).not_to be_nil
+      expect(saturday_hours["start_time"]).to eq("08:00")
+      expect(saturday_hours["end_time"]).to eq("12:00")
       expect(response_status).to eq(200)
     end
     

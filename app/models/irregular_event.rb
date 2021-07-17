@@ -7,7 +7,7 @@ class IrregularEvent < ApplicationRecord
   # need to validate that irregular events don't overlap for the same schedulable
 
   def self.between(start_date, end_date)
-    where("start_time BETWEEN ? AND ?", start_date, end_date)
+    where("start_time BETWEEN ? AND ?", start_date.beginning_of_day, end_date.end_of_day)
   end
 
   def self.by_location(location)
