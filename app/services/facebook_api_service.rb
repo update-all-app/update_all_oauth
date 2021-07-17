@@ -24,8 +24,7 @@ class FacebookApiService < ApiService
   # we'll find it by looking through the pot.location_services
   # pot.location_services.find_by(page_id: page_id).try(:location)
   # this should return the response from the API parsed from JSON.
-  def update_hours(start_date=Date.today.next_week, end_date=Date.today.next_week(:sunday))
-    page_id = pot.page_id
+  def update_hours(page_id, start_date=Date.today.next_week, end_date=Date.today.next_week(:sunday))
     page = pot.page_data.find{|h| h["id"] == page_id}
     raise StandardError.new("Page with id: #{page_id} not found within scope of user access: #{pot.page_data}") unless page
     page_access_token = page["page_access_token"]

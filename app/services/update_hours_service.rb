@@ -12,9 +12,10 @@ class UpdateHoursService
   # return an array of hashes containing data about the api response status
   def call
     responses = {}
-    location.provider_oauth_tokens.each do |pot|
+    location.location_services.each do |location_service|
+      pot = location_service.provider_oauth_token
       service_class = "#{pot.provider}_api_service".camelize.constantize
-      responses[pot.provider] = service_class.new(pot).update_hours
+      responses[pot.provider] = service_class.new(pot).update_hours(location_service.page_id)
     end
     responses
   end
