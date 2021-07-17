@@ -1,4 +1,5 @@
 class Api::V1::HoursUpdatesController < ApplicationController
+  before_action :doorkeeper_authorize!
   before_action :set_hours_update, only: [:show, :update, :destroy]
   before_action :set_location
 
