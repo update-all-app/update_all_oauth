@@ -1,6 +1,6 @@
 class ProviderOauthToken < ApplicationRecord
   belongs_to :user
-  has_many :location_services
+  has_many :location_services, dependent: :destroy
   has_many :locations, through: :location_services
 
   def retrieve(exchange_token)
@@ -15,7 +15,8 @@ class ProviderOauthToken < ApplicationRecord
         {
           id: page["id"],
           name: page["name"],
-          page_access_token: page["access_token"]
+          page_access_token: page["access_token"],
+          instagram_is_connected: page["instagram_is_connected"]
         }
       end
     end

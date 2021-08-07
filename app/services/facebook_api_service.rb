@@ -17,7 +17,19 @@ class FacebookApiService < ApiService
       req.params['access_token'] = pot.access_token
     end
     json = JSON.parse(res.body)
-    json["data"]
+    json["data"].map do |page_data|
+      page_data.merge({"instagram_is_connected" => get_related_instagram_account(page_data)})
+    end
+  end
+
+  def get_related_instagram_account(page_data)
+    id = page_data["id"]
+    res = Faraday.get("https://graph.facebook.com/#{id}") do |req|
+      req.params['access_token'] = pot.access_token
+      req.params['fields'] = 'instagram_business_account'
+    end
+    body = JSON.parse(res.body)
+    !!body['instagram_business_account']
   end
 
   # we have a page_id but we need to find the location
