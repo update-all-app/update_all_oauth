@@ -3,8 +3,9 @@ class ProviderOauthToken < ApplicationRecord
   has_many :location_services, dependent: :destroy
   has_many :locations, through: :location_services
 
-  def retrieve(exchange_token)
+  def retrieve(short_term_creds)
     if provider == "facebook"
+      token = short_term_creds[:exchange_token]
       self.access_token = FacebookApiService.get_access_token(exchange_token)
       # page access tokens don't expire so this is not needed here but we may need something like this for other providers
       # self.expires_at = DateTime.now + json["expires_in"].seconds
@@ -19,6 +20,8 @@ class ProviderOauthToken < ApplicationRecord
           instagram_is_connected: page["instagram_is_connected"]
         }
       end
+    elsif provider == "google"
+      
     end
   end
 
