@@ -15,20 +15,20 @@ class Api::V1::ProviderOauthTokensController < ApplicationController
 
   # POST /provider_oauth_tokens
   def create
-    @provider_oauth_token = current_user.provider_oauth_tokens.find_or_create_by(existing_token_params)
-    require 'google/api_client/client_secrets'
-    require "google/apis/mybusinessplaceactions_v1"
+    @provider_oauth_token = current_user.provider_oauth_tokens.find_or_initialize_by(existing_token_params)
+    # require 'google/api_client/client_secrets'
+    # require "google/apis/mybusinessplaceactions_v1"
 
-    # Create a client object
-    client = Google::Apis::MybusinessplaceactionsV1::MyBusinessPlaceActionsService.new
+    # # Create a client object
+    # client = Google::Apis::MybusinessplaceactionsV1::MyBusinessPlaceActionsService.new
 
-    # use https://github.com/googleapis/signet to from code to access token
-    CLIENT_SECRETS = Google::APIClient::ClientSecrets.load
-    authorization = CLIENT_SECRETS.to_authorization
+    # # use https://github.com/googleapis/signet to from code to access token
+    # CLIENT_SECRETS = Google::APIClient::ClientSecrets.load
+    # authorization = CLIENT_SECRETS.to_authorization
 
-    # You can then use this with an API client, e.g.:
-    client.authorization = authorization
-    byebug
+    # # You can then use this with an API client, e.g.:
+    # client.authorization = authorization
+    # byebug
     @provider_oauth_token.retrieve(short_term_creds)
     if @provider_oauth_token.save
       render json: @provider_oauth_token, status: :created

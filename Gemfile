@@ -60,3 +60,5 @@ gem "jsonapi-serializer", "~> 2.2"
 
 
 gem "google-api-ruby-client", "~> 9001.0"
+
+gem "signet", "~> 0.16.0"
