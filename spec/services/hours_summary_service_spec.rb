@@ -5,8 +5,8 @@ RSpec.describe HoursSummaryService do
     it "initializes with a location, start_date and end_date)" do
       # create an irregular event for a location
       irregular_event = FactoryBot.create(:irregular_event, :for_location, {
-        start_time: day_and_time_this_week("friday", "2:00"),
-        end_time: day_and_time_this_week("friday", "6:00")
+        start_time: day_and_time_this_week("friday", "9:00"),
+        end_time: day_and_time_this_week("friday", "13:00")
       })
       # create regular events for the same user and location
       user = irregular_event.user
@@ -40,7 +40,7 @@ RSpec.describe HoursSummaryService do
         start_date: beginning_of_week, 
         end_date: end_of_week
       )
-      
+      # byebug
       expect(service.call).to eq([
         {
           :days_after_start => 0,

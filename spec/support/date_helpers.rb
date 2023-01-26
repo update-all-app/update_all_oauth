@@ -15,11 +15,11 @@ DAYS = {
   6 => "sunday"
 }
 def beginning_of_week
-  DateTime.now.beginning_of_week
+  DateTime.now.utc.beginning_of_week.to_datetime
 end
 
 def end_of_week
-  DateTime.now.end_of_week
+  DateTime.now.utc.end_of_week.to_datetime
 end
 
 def day_and_time_this_week(day, time)
